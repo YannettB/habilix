@@ -1,0 +1,7 @@
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+    /* Esto empujará la clase user-info hacia el lado derecho del mat-toolbar */
+}

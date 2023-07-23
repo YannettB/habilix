@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { KnowledgeManagementComponent } from './components/knowledge-management/knowledge-management.component';
 import { SkillTreeComponent } from './components/skill-tree/skill-tree.component';
+import { HeaderComponent } from './shared/header/header.component';
 
 
 
@@ -25,7 +26,8 @@ import { SkillTreeComponent } from './components/skill-tree/skill-tree.component
     AppComponent,
     LoginComponent,
     KnowledgeManagementComponent,
-    SkillTreeComponent
+    SkillTreeComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

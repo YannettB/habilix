@@ -1,0 +1,11 @@
+<header class="header-container" fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-toolbar color="primary">
+        <mat-icon>local_fire_department</mat-icon>
+        <span>Habilix app</span>
+        <div class="user-info">
+            <mat-icon>person</mat-icon>
+            <span>{{ nombreUsuario$ | async }}</span>
+            <button mat-raised-button color="warn" (click)="cerrarSesion()">Cerrar Sesión</button>
+        </div>
+    </mat-toolbar>
+</header>
