@@ -15,13 +15,17 @@ import { AuthenticationService } from './services/authentication.service';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
+import { KnowledgeManagementComponent } from './components/knowledge-management/knowledge-management.component';
+import { SkillTreeComponent } from './components/skill-tree/skill-tree.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    KnowledgeManagementComponent,
+    SkillTreeComponent
   ],
   imports: [
     BrowserModule,

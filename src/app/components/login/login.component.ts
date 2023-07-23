@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,7 @@ export class LoginComponent {
   registerPassword: string = '';
   status: string = 'login';
 
-  constructor(private authService: AuthenticationService) { }
+  constructor(private authService: AuthenticationService, private router: Router) { }
 
   onLogin() {
     // Lógica para realizar el inicio de sesión con el servicio de autenticación
@@ -21,7 +23,9 @@ export class LoginComponent {
       .then(() => {
         // Redirección o acciones adicionales después del inicio de sesión exitoso
         console.log('Inicio de sesión exitoso');
+        console.log(this.authService.isLoggedInUser());
         this.status = 'logueado';
+        this.router.navigate(['/knowledge-management']);
       })
       .catch((error) => {
         // Manejar errores de inicio de sesión aquí
