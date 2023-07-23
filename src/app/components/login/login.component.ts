@@ -32,7 +32,7 @@ export class LoginComponent {
   }
 
   onRegister() {
-    this.authService.register(this.email, this.password)
+    this.authService.register(this.registerEmail, this.registerPassword)
       .then(() => {
         // Registro exitoso, puedes realizar alguna acción adicional si lo deseas
         console.log('Registro exitoso');
