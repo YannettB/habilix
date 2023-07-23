@@ -1,0 +1,31 @@
+<div class="login-container">
+    <form (submit)="onLogin()" *ngIf="status === 'login'">
+        <h2>Iniciar sesión</h2>
+        <mat-form-field appearance="fill">
+            <mat-label>Correo electrónico:</mat-label>
+            <input matInput type="email" [(ngModel)]="email" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Contraseña:</mat-label>
+            <input matInput type="password" [(ngModel)]="password" required>
+        </mat-form-field>
+        <button mat-raised-button type="submit" (click)="onLogin">Iniciar sesión</button>
+        <a routerLink="/registro" (click)="status = 'registro'">Registrarse</a>
+    </form>
+
+    <!-- Formulario de registro -->
+    <form *ngIf="status === 'registro'" (submit)="onRegister()">
+        <h2>Registrarse</h2>
+        <mat-form-field appearance="fill">
+            <mat-label>Correo electrónico:</mat-label>
+            <input matInput type="email" [(ngModel)]="registerEmail" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Contraseña:</mat-label>
+            <input matInput type="password" [(ngModel)]="registerPassword" required>
+        </mat-form-field>
+        <button mat-raised-button type="submit">Registrarse</button>
+        <!-- Enlace para volver al formulario de inicio de sesión -->
+        <a routerLink="/login" (click)="status = 'login'">Volver a iniciar sesión</a>
+    </form>
+</div>

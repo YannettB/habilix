@@ -1,0 +1,34 @@
+h2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  
+    /* Añadir margen y ajustes según tus preferencias */
+    margin: 20px;
+  }
+  
+  /* Opcional: Estilos adicionales para los elementos del formulario */
+  mat-form-field {
+    width: 100%;
+    max-width: 300px; /* Ajusta el ancho máximo según tus necesidades */
+    margin-bottom: 20px;
+  }
+  
+  button {
+    width: 100%;
+    max-width: 300px; /* Ajusta el ancho máximo según tus necesidades */
+  }
+
+  a {
+    margin-bottom: 10px; /* Ajusta el valor según el espacio deseado */
+    display: block; /* Hace que el enlace ocupe todo el ancho disponible */
+  }

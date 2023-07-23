@@ -16,5 +16,29 @@ export class AuthenticationService {
       throw error;
     }
   }
+
+  // Registro de un nuevo usuario
+  async register(email: string, password: string): Promise<void> {
+    try {
+      await this.afAuth.createUserWithEmailAndPassword(email, password);
+      // El usuario se ha registrado con éxito
+    } catch (error) {
+      // Manejo de errores
+      console.error('Error al registrar el usuario:', error);
+      throw error;
+    }
+  }
+
+  // Cerrar sesión del usuario
+  async logout(): Promise<void> {
+    try {
+      await this.afAuth.signOut();
+      // El usuario ha cerrado sesión con éxito
+    } catch (error) {
+      // Manejo de errores
+      console.error('Error al cerrar sesión:', error);
+      throw error;
+    }
+  }
   
 }
