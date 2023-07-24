@@ -1,7 +1,16 @@
 .user-info {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 3px;
     margin-left: auto;
     /* Esto empujará la clase user-info hacia el lado derecho del mat-toolbar */
+}
+
+.user-info span {
+    font-size: 12px!important;
+}
+
+.user-info a {
+    font-size: 12px!important;
+    color: white;
 }
