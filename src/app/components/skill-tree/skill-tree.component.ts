@@ -1,6 +1,6 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, Inject } from '@angular/core';
+import { Component, AfterViewInit, Inject } from '@angular/core';
 import { DataSet } from "vis-data/peer";
-import { Network } from "vis-network";
+import { Network } from "vis-network/peer";
 import { DOCUMENT } from '@angular/common';
 import { SkillNode } from 'src/app/models/skill-node.model';
 import { SkillData } from 'src/app/models/skill-data.model';
@@ -123,7 +123,7 @@ export class SkillTreeComponent implements AfterViewInit {
     }
 
     const treeData: SkillData = { nodes: new DataSet<SkillNode>(nodes), edges: new DataSet<any>(edges) };
-    
+
     return treeData;
   }
 
