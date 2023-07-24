@@ -5,7 +5,7 @@ import { DOCUMENT } from '@angular/common';
 import { SkillNode } from 'src/app/models/skill-node.model';
 import { SkillData } from 'src/app/models/skill-data.model';
 import { FirebaseDataService } from 'src/app/services/firebase-data.service';
-import { FireBaseData, SkillDataNode } from 'src/app/models/firebase-data.model';
+import { SkillPlanNode, SkillDataNode } from 'src/app/models/skill-plan.model';
 import { environment } from 'src/environments/environment';
 
 
@@ -21,7 +21,7 @@ export class SkillTreeComponent implements AfterViewInit {
   constructor(private fireBaseDataService: FirebaseDataService) { }
 
   ngAfterViewInit() {
-    this.fireBaseDataService.obtenerDatosDummy().then((res: FireBaseData[]) => {
+    this.fireBaseDataService.obtenerDatosDummy().then((res: SkillPlanNode[]) => {
       const container = document.getElementById("tree-container");
       const data: SkillData = this.buildTree(res);
       const options = environment.treeOptions;
@@ -63,7 +63,7 @@ export class SkillTreeComponent implements AfterViewInit {
 
   processNode(node: SkillDataNode, level: number, parent: any, parentColor: string | undefined, nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[]) {
     const hasChildren = node.childs.length > 0;
-    const id = this.addNode(node.tec, node.descr, level, parent, hasChildren, parentColor, nodes, edges);
+    const id = this.addNode(node.tec.tec, node.tec.descr, level, parent, hasChildren, parentColor, nodes, edges);
     for (const child of node.childs) {
       this.processNode(child, level + 1, id, nodes[id].color, nodes, edges);
     }
@@ -78,7 +78,7 @@ export class SkillTreeComponent implements AfterViewInit {
     return color;
   }
 
-  addNode(tec: any, descr: string, level: number, parent = null, hasChildren = false, parentColor = 'green', nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[] ) {
+  addNode(tec: string, descr: string, level: number, parent = null, hasChildren = false, parentColor = 'green', nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[] ) {
     const id = nodes.length;
     const color = parent === null ? 'blue' : hasChildren ? this.getRandomColor() : parentColor;
     nodes.push({
@@ -103,7 +103,7 @@ export class SkillTreeComponent implements AfterViewInit {
     return id;
   }
 
-  buildTree(data: FireBaseData[]): SkillData {
+  buildTree(data: SkillPlanNode[]): SkillData {
     let nodes: SkillNode[] = [];
     let edges: any[] = [];
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FireBaseData } from '../models/firebase-data.model';
+import { SkillPlanNode } from '../models/skill-plan.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,26 +9,29 @@ export class FirebaseDataService {
   constructor() { }
 
   async obtenerDatosDummy(): Promise<any> {
-    const rawData: FireBaseData[] = [
+    const rawData: SkillPlanNode[] = [
       {
+        "id": "plan1",
         "lenguaje": "lenguaje1",
+		    "usuarios": ["user1", "user2", "user3"],
+        "puntuacion": 5,
         "ruta": [
           {
-            "tec": "tec-1",
-            "descr": "descr1",
+            "tec": {"tec":"tec-1", "descr": "descr1"},
+            "puntuacion": 5,
             "childs": [
               {
-                "tec": "tec-1.1",
-                "descr": "descr1",
+                "tec": {"tec":"tec-1.1", "descr": "descr1"},
+                "puntuacion": 5,
                 "childs": []
               },
               {
-                "tec": "tec-1.2",
-                "descr": "descr1",
+                "tec": {"tec":"tec-1.2", "descr": "descr1"},
+                "puntuacion": 5,
                 "childs": [
                   {
-                    "tec": "tec-1.2.1",
-                    "descr": "descr1",
+                    "tec": {"tec": "tec-1.2.1", "descr": "descr1"},
+                    "puntuacion": 5,
                     "childs": []
                   }
                 ]
@@ -36,9 +39,19 @@ export class FirebaseDataService {
             ]
           },
           {
-            "tec": "tec-2",
-            "descr": "descr1",
-            "childs": []
+            "tec": {"tec":"tec-2", "descr": "descr1"},
+            "puntuacion": 5,
+            "childs": [{
+              "tec": {"tec":"tec-2.2", "descr": "descr1"},
+              "puntuacion": 5,
+              "childs": [
+                {
+                  "tec": {"tec":"tec-2.2.1", "descr": "descr1"},
+                  "puntuacion": 5,
+                  "childs": []
+                }
+              ]
+            }]
           }
         ]
       }
