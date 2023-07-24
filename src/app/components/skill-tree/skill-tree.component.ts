@@ -47,7 +47,6 @@ export class SkillTreeComponent implements AfterViewInit {
                 nodeInfo.style.display = 'block';
               }
             }
-
           } else {
             if (document) {
               let nodeInfo = document.getElementById('node-info');
@@ -55,18 +54,16 @@ export class SkillTreeComponent implements AfterViewInit {
                 nodeInfo.style.display = 'none';
               }
             }
-
           }
         });
 
       }
     }).catch((error) => {
-      console.error('Error al registrar:', error);
+      console.error('Error al cargar y configurarnodos:', error);
     });
   }
 
 
-  // Tus datos aquí
   buildTree(data: FireBaseData[]): SkillData {
     let nodes: SkillNode[] = [];
     let edges: any[] = [];
@@ -85,7 +82,8 @@ export class SkillTreeComponent implements AfterViewInit {
         widthMin: 20,
         widthMax: 20,
         font: { size: 14, face: 'Arial', color: 'white' },
-        title: `<div style="display:flex; justify-content:center; align-items:center;"><img src="images/technology.png" style="width:25px; height:25px; margin-right:5px;">${tec}</div>`
+        title: `<div style="display:flex; justify-content:center; align-items:center;"><img src="images/technology.png" style="width:25px; height:25px; margin-right:5px;">${tec}</div>`,
+        opacity: 0.8
       });
       if (parent !== null) {
         edges.push({

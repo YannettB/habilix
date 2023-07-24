@@ -12,5 +12,6 @@ export class SkillNode {
       color: string;
     };
     "title": string;
+    "opacity": number
   }
   
