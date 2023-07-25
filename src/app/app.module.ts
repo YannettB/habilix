@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { FirestoreModule } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
+import { MatTreeModule } from '@angular/material/tree';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationService } from './services/authentication.service';
@@ -31,15 +36,21 @@ import { HeaderComponent } from './shared/header/header.component';
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule ,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    FirestoreModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
+    MatCardModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
+    MatTreeModule,
+    MatTableModule,
+    MatTabsModule,
     FormsModule
   ],
   providers: [AuthenticationService],

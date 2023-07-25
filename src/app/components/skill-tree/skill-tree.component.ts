@@ -7,6 +7,8 @@ import { SkillData } from 'src/app/models/skill-data.model';
 import { FirebaseDataService } from 'src/app/services/firebase-data.service';
 import { SkillPlanNode, SkillDataNode } from 'src/app/models/skill-plan.model';
 import { environment } from 'src/environments/environment';
+import { catchError, tap } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -17,22 +19,44 @@ import { environment } from 'src/environments/environment';
 
 export class SkillTreeComponent implements AfterViewInit {
   @Inject(DOCUMENT) document: Document | undefined
+  idPlanSeleccionado: string | null = "";
 
-  constructor(private fireBaseDataService: FirebaseDataService) { }
+  constructor(private fireBaseDataService: FirebaseDataService, private route: ActivatedRoute) {
+    // Obtener el ID del parámetro de la URL
+    this.route.paramMap.subscribe(params => {
+      this.idPlanSeleccionado = params.get('id');
+      console.log(this.idPlanSeleccionado);
+    });
+   }
 
   ngAfterViewInit() {
-    this.fireBaseDataService.obtenerDatosDummy().then((res: SkillPlanNode[]) => {
-      const container = document.getElementById("tree-container");
-      const data: SkillData = this.buildTree(res);
-      const options = environment.treeOptions;
+    this.fireBaseDataService.getDocumentbyAttr("PlanDeTrabajo", "id", this.idPlanSeleccionado)
+    .pipe(
+      tap((res) => {
+        if (res) {
+          console.log(res);
+          const container = document.getElementById("tree-container");
+          let itRes:SkillPlanNode [] = [];
+          itRes.push(res);
+          const data: SkillData = this.buildTree(itRes);
+          const options = environment.treeOptions;
 
-      if (container) {
-        const tree = new Network(container, data, options);
-        this.treeDetail(tree, data);
-      }
-    }).catch((error) => {
-      console.error('Error al cargar y configurar nodos:', error);
-    });
+          if (container) {
+            const tree = new Network(container, data, options);
+            this.treeDetail(tree, data);
+          }
+        } else {
+          // El documento no fue encontrado
+          console.log("Documento no encontrado.");
+        }
+      }),
+      catchError((error) => {
+        // Manejar errores en la obtención del documento
+        console.error('Error al cargar y configurar nodos:', error);
+        return [];
+      })
+    )
+    .subscribe();
   }
 
   treeDetail(tree: Network, data: SkillData) {

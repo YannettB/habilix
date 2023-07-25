@@ -1,0 +1,23 @@
+/* Estilo para el primer mat-card */
+#first-card {
+    margin-bottom: 20px; /* Espaciado inferior entre los dos mat-card */
+    padding: 14px;
+    padding-bottom: 30px;
+  }
+  
+  /* Estilo para el input type file y el botón de Subir JSON */
+  .file-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .file-input {
+    margin-right: 10px; /* Espaciado entre el input type file y el botón */
+  }
+  
+  /* Estilo para el botón Guardar Plan de Trabajo */
+  .save-button {
+    margin-top: 10px; /* Espaciado superior entre la tabla y el botón */
+  }
+  
