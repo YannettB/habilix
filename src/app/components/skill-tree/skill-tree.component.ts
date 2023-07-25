@@ -109,7 +109,7 @@ export class SkillTreeComponent implements AfterViewInit {
     const color = parent === null ? 'blue' : hasChildren ? this.getRandomColor() : parentColor;
     nodes.push({
       id: id,
-      label: `${tec}\n${descr}`,
+      label: `${tec}\nPuntaje: ${puntaje}`,
       level: level,
       color: color,
       shape: 'box',

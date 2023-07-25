@@ -46,11 +46,11 @@ export class KnowledgeService {
       let puntuaciones = usuariosAsociados.flatMap((usuario: Usuario) => {
         return usuario.conocimientos
           .filter((conocimiento: Conocimiento) => conocimiento.tec_id === tec.tec.id)
-          .map(conocimiento => conocimiento.puntuacion);
+          .map(conocimiento => conocimiento.puntuacion ?? 0);
       });
 
       let suma = puntuaciones.reduce((a, b) => Number(a) + Number(b), 0);
-      let media = suma / puntuaciones.length;
+      let media = suma / (puntuaciones.length == 0 ? 1 : puntuaciones.length );
 
       tec.puntuacion = Number(media.toFixed(1));
 
