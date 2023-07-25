@@ -36,6 +36,38 @@
         </mat-card>
     </mat-tab>
     <mat-tab label="Usuarios">
+        <mat-card *ngIf="usuarioForm">
+            <form [formGroup]="usuarioForm" (ngSubmit)="onSubmitUser()">
+                <mat-form-field>
+                  <mat-label>Usuario: </mat-label>
+                  <input matInput placeholder="Nombre" formControlName="nombre" required>
+                  <mat-error *ngIf="usuarioForm.get('nombre')?.invalid">Nombre es requerido</mat-error>
+                </mat-form-field>
+              
+                <div formArrayName="conocimientos">
+                  <div *ngFor="let conocimiento of conocimientosArray.controls; let i = index" [formGroupName]="i">
+                    <mat-form-field>
+                      <mat-label>Tecnología: </mat-label>
+                      <input matInput placeholder="Tec ID" formControlName="tec_id" required>
+                      <mat-error *ngIf="conocimientosArray.controls[i].get('tec_id')?.invalid">Tec ID es requerido</mat-error>
+                    </mat-form-field>
+              
+                    <mat-form-field>
+                      <mat-label>Puntuación: </mat-label>
+                      <input matInput placeholder="Puntuacion" type="number" formControlName="puntuacion" required>
+                      <mat-error *ngIf="conocimientosArray.controls[i].get('puntuacion')?.invalid">Puntuacion es requerida</mat-error>
+                    </mat-form-field>
+              
+                    <button mat-icon-button color="warn" (click)="removerConocimiento(i)">
+                      <mat-icon>remove_circle</mat-icon>
+                    </button>
 
+                  </div>
+                </div>
+              
+                <button mat-raised-button color="primary" (click)="agregarConocimiento()">Agregar Conocimiento</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!usuarioForm.valid">Guardar Usuario</button>
+              </form>              
+        </mat-card>
     </mat-tab>
 </mat-tab-group>

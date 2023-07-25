@@ -1,10 +1,10 @@
-export interface Usuario {
-    nombre: string;
-    conocimientos: Conocimiento[];
+export class Usuario {
+    "nombre": string;
+    "conocimientos": Conocimiento[];
 }
 
-export interface Conocimiento {
-    tec_id: string;
-    puntuacion: number;
+export class Conocimiento {
+    "tec_id": string;
+    "puntuacion": number;
 }
   

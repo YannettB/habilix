@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Observable, Subject, Subscription, catchError, tap } from 'rxjs';
-import { SkillDataNode, SkillPlanNode } from 'src/app/models/skill-plan.model';;
+import { SkillDataNode, SkillPlanNode } from 'src/app/models/skill-plan.model';import { Usuario } from 'src/app/models/skill-user.model';
+;
 import { FirebaseDataService } from 'src/app/services/firebase-data.service';
 
 @Component({
@@ -13,6 +14,8 @@ import { FirebaseDataService } from 'src/app/services/firebase-data.service';
 })
 export class KnowledgeManagementComponent implements OnInit {
   jsonForm: FormGroup;
+  usuarioForm: FormGroup;
+  usuario: Usuario = new Usuario();
   jsonData: SkillPlanNode = new SkillPlanNode;
   displayedColumns: string[] = ['id', 'lenguaje', 'acciones'];
   dataSource: any[] = [];
@@ -22,13 +25,41 @@ export class KnowledgeManagementComponent implements OnInit {
     this.jsonForm = this.formBuilder.group({
       file: ['', Validators.required]
     });
+    this.usuarioForm = this.formBuilder.group({
+      nombre: ['', Validators.required],
+      conocimientos: this.formBuilder.array([]) // Inicializamos como un FormArray vacío
+    });
   }
 
   ngOnInit(): void {
     this.cargarDatosPlan();
   }
 
-  
+  // Obtener el control del FormArray para conocimientos
+  get conocimientosArray(): FormArray {
+    return this.usuarioForm.get('conocimientos') as FormArray;
+  }
+
+  // Agregar un nuevo conocimiento al FormArray de conocimientos
+  agregarConocimiento(): void {
+    this.conocimientosArray.push(this.formBuilder.group({
+      tec_id: ['', Validators.required],
+      puntuacion: [0, Validators.required]
+    }));
+  }
+
+  // Remover un conocimiento del FormArray de conocimientos
+  removerConocimiento(index: number): void {
+    this.conocimientosArray.removeAt(index);
+  }
+
+  onSubmitUser(): void {
+    if (this.usuarioForm.valid) {
+      const nuevoUsuario: Usuario = this.usuarioForm.value;
+      console.log(nuevoUsuario);
+      // Aquí puedes hacer lo que necesites con el nuevo usuario, como enviarlo a Firebase para guardarlo
+    }
+  }
 
   onSubmit(): void {
     if (this.jsonForm.valid) {
