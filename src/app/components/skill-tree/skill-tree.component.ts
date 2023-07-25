@@ -87,7 +87,7 @@ export class SkillTreeComponent implements AfterViewInit {
 
   processNode(node: SkillDataNode, level: number, parent: any, parentColor: string | undefined, nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[]) {
     const hasChildren = node.childs.length > 0;
-    const id = this.addNode(node.tec.tec, node.tec.descr, level, parent, hasChildren, parentColor, nodes, edges);
+    const id = this.addNode(node.puntuacion ?? 0, node.tec.tec, node.tec.descr, level, parent, hasChildren, parentColor, nodes, edges);
     for (const child of node.childs) {
       this.processNode(child, level + 1, id, nodes[id].color, nodes, edges);
     }
@@ -102,7 +102,7 @@ export class SkillTreeComponent implements AfterViewInit {
     return color;
   }
 
-  addNode(tec: string, descr: string, level: number, parent = null, hasChildren = false, parentColor = 'green', nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[] ) {
+  addNode(puntaje:number, tec: string, descr: string, level: number, parent = null, hasChildren = false, parentColor = 'green', nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[] ) {
     const id = nodes.length;
     const color = parent === null ? 'blue' : hasChildren ? this.getRandomColor() : parentColor;
     nodes.push({
@@ -115,7 +115,7 @@ export class SkillTreeComponent implements AfterViewInit {
       widthMax: 20,
       font: { size: 14, face: 'Arial', color: 'white' },
       title: `<div style="display:flex; justify-content:center; align-items:center;"><img src="images/technology.png" style="width:25px; height:25px; margin-right:5px;">${tec}</div>`,
-      opacity: 0.8
+      opacity: this.getOpacity(puntaje)
     });
     if (parent !== null) {
       edges.push({
@@ -127,12 +127,19 @@ export class SkillTreeComponent implements AfterViewInit {
     return id;
   }
 
+  getOpacity(puntuacion: number): number {
+    const puntuacionValida = Math.max(0, Math.min(10, puntuacion));
+    const opacidad = Number((puntuacionValida/10).toFixed(1));
+    console.log("puntuacionValida: " + puntuacionValida + " opacidad: " + opacidad);
+    return opacidad && opacidad > 0 ? opacidad : 0.1;
+  }
+
   buildTree(data: SkillPlanNode[]): SkillData {
     let nodes: SkillNode[] = [];
     let edges: any[] = [];
 
     for (const topLevelNode of data) {
-      const parentId = this.addNode(topLevelNode.lenguaje, "", 0, null, false, 'green', nodes, edges);
+      const parentId = this.addNode(10, topLevelNode.lenguaje, "", 0, null, false, 'green', nodes, edges);
       for (const routeNode of topLevelNode.ruta) {
         this.processNode(routeNode, 1, parentId, nodes[parentId].color, nodes, edges);
       }
