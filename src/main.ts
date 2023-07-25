@@ -3,7 +3,11 @@ import { AppModule } from './app/app.module';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'; // Si usas Firestore
 import { environment } from './environments/environment';
+import { enableProdMode } from '@angular/core';
 
+if (environment.production) {
+  enableProdMode();
+}
 // Inicializar Firebase
 const app = initializeApp(environment.firebaseConfig);
 

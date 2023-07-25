@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Observable, Subject, Subscription, catchError, tap } from 'rxjs';
-import { SkillDataNode, SkillPlanNode } from 'src/app/models/skill-plan.model';import { Conocimiento, Usuario } from 'src/app/models/skill-user.model';
+import { SkillDataNode, SkillPlanNode } from 'src/app/models/skill-plan.model'; import { Conocimiento, Usuario } from 'src/app/models/skill-user.model';
 ;
 import { FirebaseDataService } from 'src/app/services/firebase-data.service';
 
@@ -22,12 +22,14 @@ export class KnowledgeManagementComponent implements OnInit {
   displayedColumns: string[] = ['id', 'lenguaje', 'acciones'];
   displayedColumnsUsuario: string[] = ['usuario', 'acciones'];
   displayedColumnsConocimiento: string[] = ['tec_id', 'puntuacion'];
-  
+
   dataSourceConocimiento: MatTableDataSource<Conocimiento> = new MatTableDataSource<Conocimiento>();
   dataSource: any[] = [];
   dataSourceUsuario: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
 
   @ViewChild(MatTable) tablaSkillPlan!: MatTable<SkillPlanNode>;
+  @ViewChild(MatTable) tablaUsuarios!: MatTable<SkillPlanNode>;
+  @ViewChild(MatTable) tablaConocimientos!: MatTable<SkillPlanNode>;
   detalleConocimiento: Usuario | undefined;
 
   constructor(private fireBaseDataService: FirebaseDataService, private formBuilder: FormBuilder, private router: Router) {
@@ -46,14 +48,16 @@ export class KnowledgeManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarDatosPlan();
+    this.cargarDatosUsuarios();
   }
 
   get conocimientosFormArray() {
     return this.usuarioForm.get('conocimientos') as FormArray;
   }
 
-  agregarUsuario() {
+  agregarUsuario(): void {
     this.dataSourceUsuario.data.push({
+      id: this.usuarioForm.get('nombre')?.value,
       nombre: this.usuarioForm.get('nombre')?.value,
       conocimientos: []
     });
@@ -66,32 +70,31 @@ export class KnowledgeManagementComponent implements OnInit {
     this.dataSourceConocimiento.data = usuario.conocimientos;
   }
 
-  agregarConocimiento() {
-    //const conocimientoForm = this.usuarioForm.get('conocimientos') as FormArray;
-    /*
-    conocimientoForm.push(this.formBuilder.group({ 
-      tec_id: ['', Validators.required],
-      puntuacion: ['', Validators.required]
-  }));
-  */
-  if (this.detalleConocimiento) {
-    this.detalleConocimiento.conocimientos.push({
-      tec_id: this.conocimientoForm.get('tec_id')?.value,
-      puntuacion: this.conocimientoForm.get('puntuacion')?.value
-    });
-    this.dataSourceConocimiento.data = this.detalleConocimiento.conocimientos;
+  agregarConocimiento(): void {
+    if (this.detalleConocimiento) {
+      this.detalleConocimiento.conocimientos.push({
+        tec_id: this.conocimientoForm.get('tec_id')?.value,
+        puntuacion: this.conocimientoForm.get('puntuacion')?.value
+      });
+      this.dataSourceConocimiento.data = this.detalleConocimiento.conocimientos;
+    }
+    this.dataSourceConocimiento._updateChangeSubscription(); // Actualizar datos de la tabla
+    this.conocimientoForm.reset();
   }
-  this.dataSourceConocimiento._updateChangeSubscription(); // Actualizar datos de la tabla
-  this.conocimientoForm.reset();
-}
 
-onSubmitUser(): void {
-  if (this.usuarioForm.valid) {
-    const nuevoUsuario: Usuario = this.usuarioForm.value;
-    // Aquí puedes hacer lo que necesites con el nuevo usuario, como guardarlo en la base de datos
-    console.log(nuevoUsuario);
+  guardarUsuarios(): void {
+    if (this.dataSourceUsuario.data) {
+      this.fireBaseDataService.addCollection('Usuarios', this.dataSourceUsuario.data)
+      .then(() => {
+        this.cargarDatosUsuarios();
+        console.log('Los usuarios se han guardado correctamente.');
+        console.log(this.dataSourceUsuario.data);
+      })
+      .catch((error) => {
+        console.error('Error al guardar los usuarios:', error);
+      });
+    }
   }
-}
 
 
   onSubmit(): void {
@@ -131,7 +134,7 @@ onSubmitUser(): void {
   }
 
 
-  getPlan() {
+  getPlan(): void {
     const planId = "plan1"; // ID personalizado para el documento
 
     this.fireBaseDataService.getDocumentbyAttr("PlanDeTrabajo", "id", planId)
@@ -159,10 +162,20 @@ onSubmitUser(): void {
     this.router.navigate(['/skill-tree', id]);
   }
 
-  cargarDatosPlan() {
+  cargarDatosPlan(): void {
     this.fireBaseDataService.getCollection('PlanDeTrabajo').subscribe((planes) => {
       this.dataSource = planes;
       this.tablaSkillPlan.renderRows();
+    });
+  }
+
+  cargarDatosUsuarios(): void {
+    this.fireBaseDataService.getCollection('Usuarios').subscribe((usuarios) => {
+      this.dataSourceUsuario.data = usuarios;
+      this.tablaUsuarios.renderRows();
+      this.detalleConocimiento = undefined;
+      this.dataSourceConocimiento = new MatTableDataSource<Conocimiento>();
+      this.tablaConocimientos.renderRows();
     });
   }
 

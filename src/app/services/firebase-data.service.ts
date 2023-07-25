@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SkillPlanNode } from '../models/skill-plan.model';
-import { getFirestore, collection, addDoc, updateDoc, doc, getDoc, getDocs, deleteDoc, query, where } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, updateDoc, doc, getDoc, getDocs, deleteDoc, query, where, setDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,8 +13,14 @@ export class FirebaseDataService {
   // Función para agregar un documento a una colección
   async addDocument(collectionName: string, data: any): Promise<void> {
     const db = getFirestore();
-    const collectionRef = collection(db, collectionName);
-    await addDoc(collectionRef, data);
+    const collectionRef = doc(collection(db, collectionName), data.id);
+    await setDoc(collectionRef, data);
+  }
+
+  async addCollection(collectionName: string, data: any[]): Promise<void> { 
+    for (const docData of data) {
+      await this.addDocument(collectionName, docData);
+    }
   }
 
   // Función para actualizar un documento existente en una colección
@@ -99,20 +105,20 @@ export class FirebaseDataService {
         "puntuacion": 5,
         "ruta": [
           {
-            "tec": { "tec": "tec-1", "descr": "descr1" },
+            "tec": { "id": "tec-1", "tec": "tec-1", "descr": "descr1" },
             "puntuacion": 5,
             "childs": [
               {
-                "tec": { "tec": "tec-1.1", "descr": "descr1" },
+                "tec": {"id": "tec-1.1", "tec": "tec-1.1", "descr": "descr1" },
                 "puntuacion": 5,
                 "childs": []
               },
               {
-                "tec": { "tec": "tec-1.2", "descr": "descr1" },
+                "tec": {"id": "tec-1.2", "tec": "tec-1.2", "descr": "descr1" },
                 "puntuacion": 5,
                 "childs": [
                   {
-                    "tec": { "tec": "tec-1.2.1", "descr": "descr1" },
+                    "tec": {"id": "tec-1.2.1", "tec": "tec-1.2.1", "descr": "descr1" },
                     "puntuacion": 5,
                     "childs": []
                   }
@@ -121,14 +127,14 @@ export class FirebaseDataService {
             ]
           },
           {
-            "tec": { "tec": "tec-2", "descr": "descr1" },
+            "tec": { "id": "tec-2","tec": "tec-2", "descr": "descr1" },
             "puntuacion": 5,
             "childs": [{
-              "tec": { "tec": "tec-2.2", "descr": "descr1" },
+              "tec": { "id": "tec-2.2", "tec": "tec-2.2", "descr": "descr1" },
               "puntuacion": 5,
               "childs": [
                 {
-                  "tec": { "tec": "tec-2.2.1", "descr": "descr1" },
+                  "tec": {"id": "tec-2.2.1", "tec": "tec-2.2.1", "descr": "descr1" },
                   "puntuacion": 5,
                   "childs": []
                 }

@@ -43,9 +43,10 @@
                 <mat-error *ngIf="usuarioForm.get('nombre')?.invalid">Nombre es requerido</mat-error>
               </mat-form-field>
               <button mat-button color="primary" (click)="agregarUsuario()">Agregar Usuario</button>
+              <button mat-button color="primary" (click)="guardarUsuarios()">Guardar usuarios</button>
             </form>
           
-            <table mat-table [dataSource]="dataSourceUsuario" class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSourceUsuario" class="mat-elevation-z8" #tablaUsuarios>
               <!-- Columnas de la tabla -->
               <ng-container matColumnDef="usuario">
                 <th mat-header-cell *matHeaderCellDef>Usuario</th>
@@ -78,7 +79,7 @@
                 <button mat-button color="primary" (click)="agregarConocimiento()">Agregar Conocimiento</button>
               </form>
           
-              <table mat-table [dataSource]="dataSourceConocimiento" class="mat-elevation-z8">
+              <table mat-table [dataSource]="dataSourceConocimiento" class="mat-elevation-z8" #tablaConocimientos>
                 <!-- Columnas de la tabla -->
                 <ng-container matColumnDef="tec_id">
                   <th mat-header-cell *matHeaderCellDef>Tecnología</th>
