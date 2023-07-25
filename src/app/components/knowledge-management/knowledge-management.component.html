@@ -37,37 +37,63 @@
     </mat-tab>
     <mat-tab label="Usuarios">
         <mat-card *ngIf="usuarioForm">
-            <form [formGroup]="usuarioForm" (ngSubmit)="onSubmitUser()">
+            <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+              <mat-form-field>
+                <input matInput formControlName="nombre" placeholder="Usuario">
+                <mat-error *ngIf="usuarioForm.get('nombre')?.invalid">Nombre es requerido</mat-error>
+              </mat-form-field>
+              <button mat-button color="primary" (click)="agregarUsuario()">Agregar Usuario</button>
+            </form>
+          
+            <table mat-table [dataSource]="dataSourceUsuario" class="mat-elevation-z8">
+              <!-- Columnas de la tabla -->
+              <ng-container matColumnDef="usuario">
+                <th mat-header-cell *matHeaderCellDef>Usuario</th>
+                <td mat-cell *matCellDef="let usuario">{{ usuario.nombre }}</td>
+              </ng-container>
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <td mat-cell *matCellDef="let usuario">
+                  <!-- Botón o link para ver el detalle del conocimiento -->
+                  <button mat-button color="primary" (click)="verDetalle(usuario)">Ver Detalle</button>
+                </td>
+              </ng-container>
+          
+              <!-- Definir las columnas a mostrar -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsUsuario"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsUsuario;"></tr>
+            </table>
+          </mat-card>
+          
+          <!-- Detalle del conocimiento -->
+          <div *ngIf="detalleConocimiento">
+            <mat-card>
+              <form [formGroup]="conocimientoForm">
                 <mat-form-field>
-                  <mat-label>Usuario: </mat-label>
-                  <input matInput placeholder="Nombre" formControlName="nombre" required>
-                  <mat-error *ngIf="usuarioForm.get('nombre')?.invalid">Nombre es requerido</mat-error>
+                  <input matInput formControlName="tec_id" placeholder="Tecnología">
                 </mat-form-field>
-              
-                <div formArrayName="conocimientos">
-                  <div *ngFor="let conocimiento of conocimientosArray.controls; let i = index" [formGroupName]="i">
-                    <mat-form-field>
-                      <mat-label>Tecnología: </mat-label>
-                      <input matInput placeholder="Tec ID" formControlName="tec_id" required>
-                      <mat-error *ngIf="conocimientosArray.controls[i].get('tec_id')?.invalid">Tec ID es requerido</mat-error>
-                    </mat-form-field>
-              
-                    <mat-form-field>
-                      <mat-label>Puntuación: </mat-label>
-                      <input matInput placeholder="Puntuacion" type="number" formControlName="puntuacion" required>
-                      <mat-error *ngIf="conocimientosArray.controls[i].get('puntuacion')?.invalid">Puntuacion es requerida</mat-error>
-                    </mat-form-field>
-              
-                    <button mat-icon-button color="warn" (click)="removerConocimiento(i)">
-                      <mat-icon>remove_circle</mat-icon>
-                    </button>
-
-                  </div>
-                </div>
-              
-                <button mat-raised-button color="primary" (click)="agregarConocimiento()">Agregar Conocimiento</button>
-                <button mat-raised-button color="primary" type="submit" [disabled]="!usuarioForm.valid">Guardar Usuario</button>
-              </form>              
-        </mat-card>
+                <mat-form-field>
+                  <input matInput formControlName="puntuacion" placeholder="Puntuación">
+                </mat-form-field>
+                <button mat-button color="primary" (click)="agregarConocimiento()">Agregar Conocimiento</button>
+              </form>
+          
+              <table mat-table [dataSource]="dataSourceConocimiento" class="mat-elevation-z8">
+                <!-- Columnas de la tabla -->
+                <ng-container matColumnDef="tec_id">
+                  <th mat-header-cell *matHeaderCellDef>Tecnología</th>
+                  <td mat-cell *matCellDef="let conocimiento">{{ conocimiento.tec_id }}</td>
+                </ng-container>
+                <ng-container matColumnDef="puntuacion">
+                  <th mat-header-cell *matHeaderCellDef>Puntuación</th>
+                  <td mat-cell *matCellDef="let conocimiento">{{ conocimiento.puntuacion }}</td>
+                </ng-container>
+          
+                <!-- Definir las columnas a mostrar -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsConocimiento"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsConocimiento;"></tr>
+              </table>
+            </mat-card>
+          </div>
     </mat-tab>
 </mat-tab-group>
