@@ -14,6 +14,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationService } from './services/authentication.service';
@@ -51,6 +52,7 @@ import { HeaderComponent } from './shared/header/header.component';
     MatTreeModule,
     MatTableModule,
     MatTabsModule,
+    MatCheckboxModule,
     FormsModule
   ],
   providers: [AuthenticationService],

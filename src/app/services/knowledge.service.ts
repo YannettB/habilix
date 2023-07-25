@@ -13,7 +13,7 @@ export class KnowledgeService {
 
   constructor(private firebasedataService: FirebaseDataService) { }
 
-  getPlanPuntajes(planId: string): Observable<any> {
+  getPlanPuntajes(planId: string, usuariosActivos: any[]): Observable<any> {
     // Obtiene el plan de trabajo
     let planObservable = this.firebasedataService.getDocumentbyAttr("PlanDeTrabajo", "id", planId);
   
@@ -27,7 +27,13 @@ export class KnowledgeService {
         return equipoObservable.pipe(
           map(equipo => {
             // Filtra el equipo para obtener solo los usuarios asociados a este plan
-            let usuariosAsociados = equipo.filter(usuario => plan.usuarios.includes(usuario.id));
+            let usuariosAsociados;
+            if(usuariosActivos && usuariosActivos.length > 0) {
+              // se valida que esten incluidos en la lista de checkboxs activos
+              usuariosAsociados = equipo.filter(usuario => plan.usuarios.includes(usuario.id) && usuariosActivos.find(f => f.usuario == usuario.id && f.activo));
+            } else {
+              usuariosAsociados = equipo.filter(usuario => plan.usuarios.includes(usuario.id));
+            }
   
             // Asumimos que 'plan' y 'usuariosAsociados' son arrays y seguimos la lógica de la respuesta anterior
             this.obtenerMediaPuntaje(plan.ruta, usuariosAsociados);

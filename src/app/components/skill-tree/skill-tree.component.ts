@@ -21,6 +21,7 @@ import { KnowledgeService } from 'src/app/services/knowledge.service';
 export class SkillTreeComponent implements AfterViewInit {
   @Inject(DOCUMENT) document: Document | undefined
   idPlanSeleccionado: string | null = "";
+  usuariosActivos: any[] = [];
 
   constructor(private fireBaseDataService: FirebaseDataService, private route: ActivatedRoute, private knowledgeService: KnowledgeService) {
     // Obtener el ID del parámetro de la URL
@@ -31,37 +32,62 @@ export class SkillTreeComponent implements AfterViewInit {
    }
 
   ngAfterViewInit() {
-    //this.fireBaseDataService.getDocumentbyAttr("PlanDeTrabajo", "id", this.idPlanSeleccionado)
-    this.knowledgeService.getPlanPuntajes(this.idPlanSeleccionado ?? "")
-    .pipe(
-      tap((res) => {
-        if (res) {
-          console.log(res);
-          const container = document.getElementById("tree-container");
-          let itRes:SkillPlanNode [] = [];
-          itRes.push(res);
-          const data: SkillData = this.buildTree(itRes);
-          const options = environment.treeOptions;
-
-          if (container) {
-            const tree = new Network(container, data, options);
-            this.treeDetail(tree, data);
-          }
-        } else {
-          // El documento no fue encontrado
-          console.log("Documento no encontrado.");
-        }
-      }),
-      catchError((error) => {
-        // Manejar errores en la obtención del documento
-        console.error('Error al cargar y configurar nodos:', error);
-        return [];
-      })
-    )
-    .subscribe();
+    this.cargarNodosPlan();
   }
 
-  treeDetail(tree: Network, data: SkillData) {
+  private cargarNodosPlan() {
+    this.knowledgeService.getPlanPuntajes(this.idPlanSeleccionado ?? "", this.usuariosActivos)
+      .pipe(
+        tap((res: SkillPlanNode) => {
+          if (res) {
+            console.log(res);
+            const container = document.getElementById("tree-container");
+            let itRes: SkillPlanNode[] = [];
+            itRes.push(res);
+            const data: SkillData = this.buildTree(itRes);
+            const options = environment.treeOptions;
+
+            if (container) {
+              const tree = new Network(container, data, options);
+              this.treeDetail(tree, data);
+            }
+            // cargar usuarios activos
+            this.cargarUsuariosActivos(res);
+          } else {
+            // El documento no fue encontrado
+            console.log("Documento no encontrado.");
+          }
+        }),
+        catchError((error) => {
+          // Manejar errores en la obtención del documento
+          console.error('Error al cargar y configurar nodos:', error);
+          return [];
+        })
+      )
+      .subscribe();
+  }
+
+  private cargarUsuariosActivos(res: SkillPlanNode) {
+    const usuariosActivos_old = [...this.usuariosActivos];
+    this.usuariosActivos = res.usuarios.flatMap((user) => {
+      let activo = true;
+      if (usuariosActivos_old && usuariosActivos_old.length > 0) {
+        let encontrado = usuariosActivos_old.find(f => f.usuario == user);
+        if (encontrado) {
+          activo = encontrado.activo;
+        }
+      }
+      let usuarioPlan = { usuario: user, activo: activo };
+      return usuarioPlan;
+    });
+    console.log("usuarios activos: " + this.usuariosActivos);
+  }
+
+  filtrarUsuarios() {
+    this.cargarNodosPlan();
+  }
+
+  private treeDetail(tree: Network, data: SkillData) {
     tree.on('select', function (params) {
       const nodeId = params.nodes[0];
       if (nodeId !== undefined) {
@@ -87,7 +113,7 @@ export class SkillTreeComponent implements AfterViewInit {
     });
   }
 
-  processNode(node: SkillDataNode, level: number, parent: any, parentColor: string | undefined, nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[]) {
+  private processNode(node: SkillDataNode, level: number, parent: any, parentColor: string | undefined, nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[]) {
     const hasChildren = node.childs.length > 0;
     const id = this.addNode(node.puntuacion ?? 0, node.tec.tec, node.tec.descr, level, parent, hasChildren, parentColor, nodes, edges);
     for (const child of node.childs) {
@@ -95,7 +121,7 @@ export class SkillTreeComponent implements AfterViewInit {
     }
   }
 
-  getRandomColor() {
+  private getRandomColor() {
     const letters = '0123456789ABCDEF';
     let color = '#';
     for (let i = 0; i < 6; i++) {
@@ -104,12 +130,12 @@ export class SkillTreeComponent implements AfterViewInit {
     return color;
   }
 
-  addNode(puntaje:number, tec: string, descr: string, level: number, parent = null, hasChildren = false, parentColor = 'green', nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[] ) {
+  private addNode(puntaje:number, tec: string, descr: string, level: number, parent = null, hasChildren = false, parentColor = 'green', nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[] ) {
     const id = nodes.length;
     const color = parent === null ? 'blue' : hasChildren ? this.getRandomColor() : parentColor;
     nodes.push({
       id: id,
-      label: `${tec}\nPuntaje: ${puntaje}`,
+      label: level == 0 ? `${tec}\n` : `${tec}\nPuntaje: ${puntaje}`,
       level: level,
       color: color,
       shape: 'box',
@@ -129,14 +155,14 @@ export class SkillTreeComponent implements AfterViewInit {
     return id;
   }
 
-  getOpacity(puntuacion: number): number {
+  private getOpacity(puntuacion: number): number {
     const puntuacionValida = Math.max(0, Math.min(10, puntuacion));
     const opacidad = Number((puntuacionValida/10).toFixed(1));
     console.log("puntuacionValida: " + puntuacionValida + " opacidad: " + opacidad);
     return opacidad && opacidad > 0 ? opacidad : 0.1;
   }
 
-  buildTree(data: SkillPlanNode[]): SkillData {
+  private buildTree(data: SkillPlanNode[]): SkillData {
     let nodes: SkillNode[] = [];
     let edges: any[] = [];
 

@@ -1,6 +1,25 @@
-<div id="tree-container"></div>
-<div id="node-info"
-    style="position: fixed; right: 0; top: 0; width: 250px; height: 100%; background-color: #f0f0f0; display: none; padding: 20px; overflow: auto;">
-    <h3>Información del Nodo</h3>
-    <p id="node-info-text"></p>
+<div class="container">
+    <mat-card class="left-card">
+        <button mat-button color="primary" (click)="filtrarUsuarios()">Filtrar Usuarios</button>
+        <div class="scroll-container">
+            <span class="example-list-section">
+                <ul>
+                    <li *ngFor="let usuario of usuariosActivos">
+                        <mat-checkbox [(ngModel)]="usuario.activo">
+                            {{usuario.usuario}}
+                        </mat-checkbox>
+                    </li>
+                </ul>
+            </span>
+        </div>
+    </mat-card>
+    <mat-card class="right-card">
+        <div id="tree-container"></div>
+        <div id="node-info"
+            style="position: fixed; right: 0; top: 0; width: 250px; height: 100%; background-color: #f0f0f0; display: none; padding: 20px; overflow: auto;">
+            <h3>Información del Nodo</h3>
+            <p id="node-info-text"></p>
+        </div>
+    </mat-card>
+
 </div>

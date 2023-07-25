@@ -3,3 +3,21 @@
     height: 100vh;
     border: 1px solid lightgray;
 }
+
+.container {
+    display: flex;
+  }
+  
+  .left-card {
+    flex: 0.5;
+    margin-right: 10px; /* Espacio entre los dos mat-card */
+  }
+  
+  .right-card {
+    flex: 1;
+  }
+
+  .scroll-container {
+    max-height: 200px; /* Altura máxima para mostrar el scroll */
+    overflow-y: auto; /* Aparecerá el scroll vertical si el contenido excede el límite de altura */
+  }
