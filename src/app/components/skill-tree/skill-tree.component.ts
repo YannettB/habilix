@@ -9,6 +9,7 @@ import { SkillPlanNode, SkillDataNode } from 'src/app/models/skill-plan.model';
 import { environment } from 'src/environments/environment';
 import { catchError, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { KnowledgeService } from 'src/app/services/knowledge.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class SkillTreeComponent implements AfterViewInit {
   @Inject(DOCUMENT) document: Document | undefined
   idPlanSeleccionado: string | null = "";
 
-  constructor(private fireBaseDataService: FirebaseDataService, private route: ActivatedRoute) {
+  constructor(private fireBaseDataService: FirebaseDataService, private route: ActivatedRoute, private knowledgeService: KnowledgeService) {
     // Obtener el ID del parámetro de la URL
     this.route.paramMap.subscribe(params => {
       this.idPlanSeleccionado = params.get('id');
@@ -30,7 +31,8 @@ export class SkillTreeComponent implements AfterViewInit {
    }
 
   ngAfterViewInit() {
-    this.fireBaseDataService.getDocumentbyAttr("PlanDeTrabajo", "id", this.idPlanSeleccionado)
+    //this.fireBaseDataService.getDocumentbyAttr("PlanDeTrabajo", "id", this.idPlanSeleccionado)
+    this.knowledgeService.getPlanPuntajes(this.idPlanSeleccionado ?? "")
     .pipe(
       tap((res) => {
         if (res) {
