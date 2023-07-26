@@ -2,13 +2,13 @@
     <mat-tab label="Planes de trabajo">
         <mat-card id="first-card">
             <form (ngSubmit)="onSubmit()" #jsonForm="ngForm">
+                <mat-label>Seleccione archivo JSON:</mat-label>
                 <div class="file-container">
                     <input type="file" class="file-input" (change)="onFileSelected($event)" accept=".json" required>
-                    <button mat-raised-button [disabled]="!jsonForm.valid">Guardar Plan de Trabajo</button>
+                    <button mat-stroked-button color="primary" [disabled]="!jsonForm.valid">Guardar Plan de Trabajo</button>
                 </div>
             </form>
-        </mat-card>
-        <mat-card>
+        
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" #tablaSkillPlan>
                 <!-- Columnas de la tabla -->
                 <ng-container matColumnDef="id">
@@ -17,7 +17,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="lenguaje">
-                    <th mat-header-cell *matHeaderCellDef> Lenguaje </th>
+                    <th mat-header-cell *matHeaderCellDef> Tecnología </th>
                     <td mat-cell *matCellDef="let plan"> {{ plan.lenguaje }} </td>
                 </ng-container>
 
@@ -36,14 +36,14 @@
         </mat-card>
     </mat-tab>
     <mat-tab label="Usuarios">
-        <mat-card *ngIf="usuarioForm">
+        <mat-card *ngIf="usuarioForm" class="usuarioForm">
             <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
               <mat-form-field>
                 <input matInput formControlName="nombre" placeholder="Usuario">
                 <mat-error *ngIf="usuarioForm.get('nombre')?.invalid">Nombre es requerido</mat-error>
               </mat-form-field>
-              <button mat-button color="primary" (click)="agregarUsuario()">Agregar Usuario</button>
-              <button mat-button color="primary" (click)="guardarUsuarios()">Guardar usuarios</button>
+              <button mat-stroked-button color="primary" (click)="agregarUsuario()">Agregar Usuario</button>
+              <button mat-stroked-button color="primary" (click)="guardarUsuarios()">Guardar Todo</button>
             </form>
           
             <table mat-table [dataSource]="dataSourceUsuario" class="mat-elevation-z8" #tablaUsuarios>
@@ -68,7 +68,7 @@
           
           <!-- Detalle del conocimiento -->
           <div *ngIf="detalleConocimiento">
-            <mat-card>
+            <mat-card class="conocimientoForm">
               <form [formGroup]="conocimientoForm">
                 <mat-form-field>
                   <input matInput formControlName="tec_id" placeholder="Tecnología">
@@ -76,7 +76,7 @@
                 <mat-form-field>
                   <input matInput formControlName="puntuacion" placeholder="Puntuación">
                 </mat-form-field>
-                <button mat-button color="primary" (click)="agregarConocimiento()">Agregar Conocimiento</button>
+                <button mat-stroked-button color="primary" (click)="agregarConocimiento()">Agregar Conocimiento</button>
               </form>
           
               <table mat-table [dataSource]="dataSourceConocimiento" class="mat-elevation-z8" #tablaConocimientos>

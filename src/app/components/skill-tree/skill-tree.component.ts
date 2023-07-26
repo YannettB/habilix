@@ -40,17 +40,8 @@ export class SkillTreeComponent implements AfterViewInit {
       .pipe(
         tap((res: SkillPlanNode) => {
           if (res) {
-            console.log(res);
-            const container = document.getElementById("tree-container");
-            let itRes: SkillPlanNode[] = [];
-            itRes.push(res);
-            const data: SkillData = this.buildTree(itRes);
-            const options = environment.treeOptions;
-
-            if (container) {
-              const tree = new Network(container, data, options);
-              this.treeDetail(tree, data);
-            }
+            // generar arbol con vis
+            this.cargarArbolVis(res);
             // cargar usuarios activos
             this.cargarUsuariosActivos(res);
           } else {
@@ -65,6 +56,19 @@ export class SkillTreeComponent implements AfterViewInit {
         })
       )
       .subscribe();
+  }
+
+  private cargarArbolVis(res: SkillPlanNode) {
+    const container = document.getElementById("tree-container");
+    let itRes: SkillPlanNode[] = [];
+    itRes.push(res);
+    const data: SkillData = this.buildTree(itRes);
+    const options = environment.treeOptions;
+
+    if (container) {
+      const tree = new Network(container, data, options);
+      this.treeDetail(tree, data);
+    }
   }
 
   private cargarUsuariosActivos(res: SkillPlanNode) {
@@ -132,7 +136,7 @@ export class SkillTreeComponent implements AfterViewInit {
 
   private addNode(puntaje:number, tec: string, descr: string, level: number, parent = null, hasChildren = false, parentColor = 'green', nodes: SkillNode[], edges: { from: never; to: number; smooth: { type: string; forceDirection: string; }; }[] ) {
     const id = nodes.length;
-    const color = parent === null ? 'blue' : hasChildren ? this.getRandomColor() : parentColor;
+    const color = '#ff4081'//parent === null ? 'blue' : hasChildren ? this.getRandomColor() : parentColor;
     nodes.push({
       id: id,
       label: level == 0 ? `${tec}\n` : `${tec}\nPuntaje: ${puntaje}`,

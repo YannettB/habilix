@@ -1,15 +1,39 @@
 /* Estilo para el primer mat-card */
 #first-card {
-    margin-bottom: 20px; /* Espaciado inferior entre los dos mat-card */
+    margin-bottom: 20px; 
+    margin-top: 20px;
     padding: 14px;
-    padding-bottom: 30px;
   }
+
+  #first-card form {
+padding-bottom: 30px;  
+}
   
   /* Estilo para el input type file y el botón de Subir JSON */
   .file-container {
     display: flex;
     align-items: center;
     margin-top: 20px;
+  }
+
+  .usuarioForm  button {
+    margin-left: 10px;
+  }
+
+  .usuarioForm {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 14px;
+  }
+
+  .conocimientoForm {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 14px;
+  }
+
+  .conocimientoForm  button {
+    margin-left: 10px;
   }
   
   .file-input {
