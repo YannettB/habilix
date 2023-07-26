@@ -21,7 +21,7 @@ export class KnowledgeManagementComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'lenguaje', 'acciones'];
   displayedColumnsUsuario: string[] = ['usuario', 'acciones'];
-  displayedColumnsConocimiento: string[] = ['tec_id', 'puntuacion'];
+  displayedColumnsConocimiento: string[] = ['tec_id', 'puntuacion', 'acciones'];
 
   dataSourceConocimiento: MatTableDataSource<Conocimiento> = new MatTableDataSource<Conocimiento>();
   dataSource: MatTableDataSource<SkillPlanNode> = new MatTableDataSource<SkillPlanNode>(); //any[] = [];
@@ -192,6 +192,15 @@ export class KnowledgeManagementComponent implements OnInit {
   applyFilterPlanTrabajo(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue?.trim().toLowerCase() || '';
+  }
+
+  eliminarTecnologia(conocimiento: Conocimiento) {
+    this.dataSourceConocimiento.data = this.dataSourceConocimiento.data.filter(f => f.tec_id !== conocimiento.tec_id);
+    if(this.detalleConocimiento){
+      this.detalleConocimiento.conocimientos = this.dataSourceConocimiento.data;
+    }
+    this.dataSourceConocimiento._updateChangeSubscription(); // Actualizar datos de la tabla
+    this.tablaConocimientos.renderRows();
   }
 
 }
