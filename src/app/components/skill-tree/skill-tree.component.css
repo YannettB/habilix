@@ -21,3 +21,7 @@
     max-height: 200px; /* Altura máxima para mostrar el scroll */
     overflow-y: auto; /* Aparecerá el scroll vertical si el contenido excede el límite de altura */
   }
+
+  ul {
+    list-style-type: none;
+  }
