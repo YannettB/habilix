@@ -24,4 +24,8 @@ export class HeaderComponent {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  irInicio(): void {
+    this.router.navigate(['/knowledge-management']);
+  }
 }

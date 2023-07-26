@@ -44,12 +44,13 @@
     </mat-tab>
     <mat-tab label="Usuarios">
         <mat-card *ngIf="usuarioForm" class="usuarioForm">
-            <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+            <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()" class="formUsuario">
               <mat-form-field>
                 <input matInput formControlName="nombre" placeholder="Usuario">
                 <mat-error *ngIf="usuarioForm.get('nombre')?.invalid">Nombre es requerido</mat-error>
               </mat-form-field>
               <button mat-stroked-button color="primary" (click)="agregarUsuario()">Agregar Usuario</button>
+              <span class="spacer"></span>
               <button mat-stroked-button color="primary" (click)="guardarUsuarios()">Guardar Todo</button>
             </form>
 
