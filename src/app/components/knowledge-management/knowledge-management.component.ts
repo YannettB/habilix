@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Observable, Subject, Subscription, catchError, tap } from 'rxjs';
-import { SkillDataNode, SkillPlanNode } from 'src/app/models/skill-plan.model'; import { Conocimiento, Usuario } from 'src/app/models/skill-user.model';
+import { catchError, tap } from 'rxjs';
+import { SkillPlanNode } from 'src/app/models/skill-plan.model'; import { Conocimiento, Usuario } from 'src/app/models/skill-user.model';
 ;
 import { FirebaseDataService } from 'src/app/services/firebase-data.service';
 
@@ -16,7 +16,7 @@ export class KnowledgeManagementComponent implements OnInit {
   jsonForm: FormGroup;
   usuarioForm: FormGroup;
   conocimientoForm: FormGroup;
-
+  detalleConocimiento: Usuario | undefined;
   jsonData: SkillPlanNode = new SkillPlanNode;
 
   displayedColumns: string[] = ['id', 'lenguaje', 'acciones'];
@@ -24,13 +24,13 @@ export class KnowledgeManagementComponent implements OnInit {
   displayedColumnsConocimiento: string[] = ['tec_id', 'puntuacion'];
 
   dataSourceConocimiento: MatTableDataSource<Conocimiento> = new MatTableDataSource<Conocimiento>();
-  dataSource: any[] = [];
+  dataSource: MatTableDataSource<SkillPlanNode> = new MatTableDataSource<SkillPlanNode>(); //any[] = [];
   dataSourceUsuario: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
 
   @ViewChild(MatTable) tablaSkillPlan!: MatTable<SkillPlanNode>;
   @ViewChild(MatTable) tablaUsuarios!: MatTable<SkillPlanNode>;
   @ViewChild(MatTable) tablaConocimientos!: MatTable<SkillPlanNode>;
-  detalleConocimiento: Usuario | undefined;
+  
 
   constructor(private fireBaseDataService: FirebaseDataService, private formBuilder: FormBuilder, private router: Router) {
     this.jsonForm = this.formBuilder.group({
@@ -163,8 +163,8 @@ export class KnowledgeManagementComponent implements OnInit {
   }
 
   cargarDatosPlan(): void {
-    this.fireBaseDataService.getCollection('PlanDeTrabajo').subscribe((planes) => {
-      this.dataSource = planes;
+    this.fireBaseDataService.getCollection('PlanDeTrabajo').subscribe((planes: SkillPlanNode[]) => {
+      this.dataSource.data = planes;
       this.tablaSkillPlan.renderRows();
     });
   }
@@ -177,6 +177,21 @@ export class KnowledgeManagementComponent implements OnInit {
       this.dataSourceConocimiento = new MatTableDataSource<Conocimiento>();
       this.tablaConocimientos.renderRows();
     });
+  }
+
+  applyFilterUsuario(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourceUsuario.filter = filterValue?.trim().toLowerCase() || '';
+  }
+
+  applyFilterTecnologia(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourceConocimiento.filter = filterValue?.trim().toLowerCase() || '';
+  }
+
+  applyFilterPlanTrabajo(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue?.trim().toLowerCase() || '';
   }
 
 }

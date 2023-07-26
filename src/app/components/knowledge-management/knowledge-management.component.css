@@ -44,4 +44,13 @@ padding-bottom: 30px;
   .save-button {
     margin-top: 10px; /* Espaciado superior entre la tabla y el botón */
   }
+
+  .tablaFiltro {
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+
+  .tablaFiltro mat-form-field {
+    margin-left: 20px;
+  }
   

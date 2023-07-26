@@ -9,6 +9,13 @@
                 </div>
             </form>
         
+            <table class="mat-elevation-z8 tablaFiltro" >
+                <mat-label>Filtrar lista planes:</mat-label>
+                <mat-form-field>
+                    <input matInput (keyup)="applyFilterPlanTrabajo($event)" >
+                </mat-form-field>
+            </table>
+
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" #tablaSkillPlan>
                 <!-- Columnas de la tabla -->
                 <ng-container matColumnDef="id">
@@ -45,6 +52,13 @@
               <button mat-stroked-button color="primary" (click)="agregarUsuario()">Agregar Usuario</button>
               <button mat-stroked-button color="primary" (click)="guardarUsuarios()">Guardar Todo</button>
             </form>
+
+            <table class="mat-elevation-z8 tablaFiltro" >
+                <mat-label>Filtrar lista usuario:</mat-label>
+                <mat-form-field>
+                    <input matInput (keyup)="applyFilterUsuario($event)" >
+                </mat-form-field>
+            </table>
           
             <table mat-table [dataSource]="dataSourceUsuario" class="mat-elevation-z8" #tablaUsuarios>
               <!-- Columnas de la tabla -->
@@ -78,6 +92,13 @@
                 </mat-form-field>
                 <button mat-stroked-button color="primary" (click)="agregarConocimiento()">Agregar Conocimiento</button>
               </form>
+
+              <table class="mat-elevation-z8 tablaFiltro" >
+                <mat-label>Filtrar lista tecnologías:</mat-label>
+                <mat-form-field>
+                    <input matInput (keyup)="applyFilterTecnologia($event)" >
+                </mat-form-field>
+            </table>
           
               <table mat-table [dataSource]="dataSourceConocimiento" class="mat-elevation-z8" #tablaConocimientos>
                 <!-- Columnas de la tabla -->
