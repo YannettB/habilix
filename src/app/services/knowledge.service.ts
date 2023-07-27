@@ -36,7 +36,7 @@ export class KnowledgeService {
             }
   
             // Asumimos que 'plan' y 'usuariosAsociados' son arrays y seguimos la lógica de la respuesta anterior
-            this.obtenerMediaPuntaje(plan.ruta, usuariosAsociados);
+            this.obtenerMediaPuntaje(plan.ruta, usuariosAsociados, usuariosAsociados.length); 
   
             return plan;
           })
@@ -46,7 +46,7 @@ export class KnowledgeService {
   }
   
 
-  private obtenerMediaPuntaje(ruta: SkillDataNode[], usuariosAsociados: any[]) {
+  private obtenerMediaPuntaje(ruta: SkillDataNode[], usuariosAsociados: any[], totalSeleccionado: number) {
     ruta.forEach((tec: SkillDataNode) => {
 
       let puntuaciones = usuariosAsociados.flatMap((usuario: Usuario) => {
@@ -56,12 +56,12 @@ export class KnowledgeService {
       });
 
       let suma = puntuaciones.reduce((a, b) => Number(a) + Number(b), 0);
-      let media = suma / (puntuaciones.length == 0 ? 1 : puntuaciones.length );
+      let media = suma / ( totalSeleccionado == 0 ? 1 : totalSeleccionado );
 
       tec.puntuacion = Number(media.toFixed(1));
 
       if(tec.childs && tec.childs.length > 0) {
-        this.obtenerMediaPuntaje(tec.childs, usuariosAsociados);
+        this.obtenerMediaPuntaje(tec.childs, usuariosAsociados, totalSeleccionado);
       }
 
     });
