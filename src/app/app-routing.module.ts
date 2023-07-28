@@ -8,8 +8,8 @@ import { SkillTreeComponent } from './components/skill-tree/skill-tree.component
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'knowledge-management', component: KnowledgeManagementComponent},//, canActivate: [AuthGuard] },
-  { path: 'skill-tree/:id', component: SkillTreeComponent },
+  { path: 'knowledge-management', component: KnowledgeManagementComponent, canActivate: [AuthGuard] },
+  { path: 'skill-tree/:id', component: SkillTreeComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'login', pathMatch: 'full' }, // Redireccionar a 'login' si la ruta no existe
 ];
 

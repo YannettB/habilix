@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseDataService } from './firebase-data.service';
 import { Observable, map, switchMap } from 'rxjs';
-import { SkillTec } from '../models/skill-tec.model';
-import { SkillData } from '../models/skill-data.model';
 import { Conocimiento, Usuario } from '../models/skill-user.model';
 import { SkillDataNode, SkillPlanNode } from '../models/skill-plan.model';
 
