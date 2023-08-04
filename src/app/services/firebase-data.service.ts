@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SkillPlanNode } from '../models/skill-plan.model';
 import { getFirestore, collection, addDoc, updateDoc, doc, getDoc, getDocs, deleteDoc, query, where, setDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 

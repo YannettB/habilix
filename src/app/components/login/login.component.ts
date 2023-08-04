@@ -30,8 +30,8 @@ export class LoginComponent {
       .catch((error) => {
         // Manejar errores de inicio de sesión aquí
         console.error('Error al iniciar sesión:', error);
-        this.status = 'error';
-        alert('error');
+        this.status = 'login';
+        alert('Error al iniciar sesión');
       });
   }
 
@@ -45,7 +45,8 @@ export class LoginComponent {
       .catch((error) => {
         // Manejar errores de registro
         console.error('Error al registrar:', error);
-        this.status = 'error';
+        this.status = 'login';
+        alert('Error al registrar');
       });
   }
 
@@ -59,7 +60,7 @@ export class LoginComponent {
       .catch((error) => {
         // Manejar errores de cierre de sesión
         console.error('Error al cerrar sesión:', error);
-        this.status = 'error';
+        this.status = 'login';
       });
   }
   

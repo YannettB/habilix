@@ -1,5 +1,5 @@
 <div class="login-container">
-    <form (submit)="onLogin()" *ngIf="status === 'login'">
+    <form (submit)="onLogin()" *ngIf="status === 'login' || status === 'registrado'">
         <h2>Iniciar sesión</h2>
         <mat-form-field appearance="fill">
             <mat-label>Correo electrónico:</mat-label>
@@ -28,4 +28,5 @@
         <!-- Enlace para volver al formulario de inicio de sesión -->
         <a routerLink="" (click)="status = 'login'">Iniciar sesión</a>
     </form>
+
 </div>
